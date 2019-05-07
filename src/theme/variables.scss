@@ -3,6 +3,8 @@
 
 /** Ionic CSS Variables **/
 :root {
+ --ion-font-family: "Poppins";
+ 
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -74,4 +76,13 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --ion-background-color: #eee;
+  --ion-toolbar-background: #eee;
+ 
+}
+
+ion-content.main{
+  --background: #fff url('../assets/lance-anderson-395983-unsplash.jpg') no-repeat center center / cover;
+ 
 }

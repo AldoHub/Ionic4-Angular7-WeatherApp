@@ -16,9 +16,9 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
+      title: 'Conditions',
       url: '/list',
-      icon: 'list'
+      icon: 'cloudy-night'
     }
   ];
 

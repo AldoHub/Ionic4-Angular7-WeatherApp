@@ -1,39 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { WeatherService } from "../weather.service";
+import {FormGroup, FormControl, Validators } from "@angular/forms";
+//ionic storage
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-list',
   templateUrl: 'list.page.html',
-  styleUrls: ['list.page.scss']
+  styleUrls: ['list.page.scss'],
 })
 export class ListPage implements OnInit {
-  private selectedItem: any;
-  private icons = [
-    'flask',
-    'wifi',
-    'beer',
-    'football',
-    'basketball',
-    'paper-plane',
-    'american-football',
-    'boat',
-    'bluetooth',
-    'build'
-  ];
-  public items: Array<{ title: string; note: string; icon: string }> = [];
-  constructor() {
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+  
+  constructor(private weatherService: WeatherService, private ionicStorage: Storage) {
+  
+  }
+
+  public weatherForm = new FormGroup({
+    city: new FormControl('', Validators.required),
+  });
+  public weather;
+  public city;
+
+  search(formData: FormData){
+    console.log(formData);
+    this.ionicStorage.set("city", formData["city"]);
+    
+    this.weatherService.getWeatherFromApi(formData["city"]).subscribe( weather => {
+      this.weather = weather;
+      console.log(weather);
+    })
+
+  }
+
+
+  getWeather(){
+      this.ionicStorage.get("city").then( city => {
+        if(city === null){
+          this.weatherService.getWeatherFromApi("paris").subscribe( weather => {
+            this.weather = weather;
+            console.log(weather);
+          })
+        }else{
+          this.weatherService.getWeatherFromApi(city).subscribe( weather => {
+            this.weather = weather;
+            console.log(weather);
+          });
+        }
+
+      }).catch(err =>{
+        console.log(err);
+      })
+   
   }
 
   ngOnInit() {
+    this.getWeather();
   }
-  // add back when alpha.4 is out
-  // navigate(item) {
-  //   this.router.navigate(['/list', JSON.stringify(item)]);
-  // }
+  
 }
